@@ -231,9 +231,18 @@ void battery_state_handler(BatteryChargeState charge) {
 void bt_layer_update_callback(Layer *layer, GContext *ctx) {
   if (bt_ok)
   	graphics_context_set_compositing_mode(ctx, GCompOpAssign);
-  else
-  	graphics_context_set_compositing_mode(ctx, GCompOpClear);
+  else 
+       {
+	  	graphics_context_set_compositing_mode(ctx, GCompOpClear);
+		static const uint32_t const segments[] = { 400, 100, 400 };
+		VibePattern pat = {
+		.durations = segments,
+		.num_segments = ARRAY_LENGTH(segments),
+		};
+		vibes_enqueue_custom_pattern(pat);
+	};
   graphics_draw_bitmap_in_rect(ctx, icon_bt, GRect(0, 0, 9, 12));
+
 }
 
 void bt_connection_handler(bool connected) {
